@@ -37,7 +37,7 @@ game.PlayerEntity = me.Entity.extend({
             this.flipX(true);
         }else if(me.input.isKeyPressed("left")){
             this.facing = "left";
-            this.body..vel.x -=this.body.accel.x * me.timer.tick;
+            this.body.vel.x -=this.body.accel.x * me.timer.tick;
             this.flipX(false);
         }else{
             this.body.vel.x = 0;
@@ -68,15 +68,13 @@ game.PlayerEntity = me.Entity.extend({
     }else if(!this.renederable.isCurrentAnimation("attack")){
         this.renderable.setCurrentAnimation("idle");    
     }
-             if(me.input.isKeyPressed("attack")){
-           
-            
       me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
        
        this._super(me.Entity, "update", [delta]);
         return true;
       
+        
     },
     
     collideHandler: function(response){
@@ -104,7 +102,7 @@ game.PlayerEntity = me.Entity.extend({
                 response.b.loseHealth();
             }
             }
-        }
+        
     }
 });
 
@@ -209,7 +207,11 @@ game.EnemyCreep = me.Entity.extend({
         }]);
             this.health = 10;
             this.alwaysUpdate = true;
-            
+//            this.attacking lets us know if the enemy is currently attacking
+            this.attacking = false;
+//            
+            this.lastAttacking = new Date().getTime();
+            this.now = new Date().getTime();
             this.body.setVelocity(3, 20);
             
             this.type = "EnemyCreep";
@@ -219,9 +221,35 @@ game.EnemyCreep = me.Entity.extend({
             
     },
     
-    update: function(){
+    update: function(delta){
+        this.now = new Date().getTime();
         
+        this.body.vel.x -= this.body.accel.x * me.timer.tick;
+        
+        me.collision.check(this, true, this.collideHandler.bind(this), true);
+        
+        
+        this.body.update(delta);
+        
+        
+        
+        this._super(me.Enitiy, "update", [delta]);
+        return true;
+    },
+    
+    collideHandler: function(response){
+        if(response.b.type==='PlayerBase'){
+            this.attacking=true;
+            this.lastAttacking=this.now;
+            this.body.vel.x = 0;
+            this.pos.x = this.pos.x + 1;
+            if((this.now-this.lastHit >= 1000)){
+                this.lastHit = this.now;
+                response.b.loseHealth(1);
+            }
+        }
     }
+    
 });
 
 game.GameManager = Object.extend({
