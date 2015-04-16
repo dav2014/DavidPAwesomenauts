@@ -327,6 +327,11 @@ game.GameManager = Object.extend({
     update: function(){
         this.now = new Data().getTime();
         
+        if(game.data.player.dead){
+            me.game.world.removeChild(game.data.player);
+            me.state.current()this.resetPlayer(10, 0);
+        }
+        
         if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
             this.lastCreep = this.now;
             var creep = me.pool.pull("EnemyCreep", 1000, 0, {});
@@ -335,4 +340,4 @@ game.GameManager = Object.extend({
         
         return true; 
     }
-})
+});
