@@ -12,9 +12,8 @@ var game = {
                 playerHealth: 10,
                 enemyCreepAttack: 1,
                 playerAttack: 1,
-                skeletonDaggerBaseDamage: 10,
-                skeletonDaggerBaseHealth: 100,
-                skeletonDaggerBaseSpeed 3,
+                playerHealth: 100,
+                playerMoveSpeed 5,
                 
                 playerAttackTimer: 1000,
                 enemyCreepAttackTimer: 1000,
@@ -22,6 +21,12 @@ var game = {
                 creepMoveSpeed: 5,
                 gameManager: "",
                 player: ""
+                exp: 0,
+                gold: 0,
+                exp1: 0,
+                exp2: 0,
+                exp3: 0,
+                exp4: 0,
 	},
 	
 	
